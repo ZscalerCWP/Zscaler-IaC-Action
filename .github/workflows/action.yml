@@ -1,4 +1,4 @@
-name: Test
+name: Zscaler IAC Scan
 
 on:
   pull_request:
@@ -8,15 +8,14 @@ env :
   API_URL : "https://main.dev.api.zscwp.io"
   AUTH_URL : "https://zscaler-poc.us.auth0.com"
 jobs:
-  test:
+  zscaler-iac-scan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses : ./
-        id : myjsaction
+        id :
         with:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           client_id : ${{ secrets.ZSCANNER_CLIENT_ID }}
           client_secret : ${{ secrets.ZSCANNER_CLIENT_SECRET }}
-          soft_build : 'true'
-      
+          fail_build : 'true'
