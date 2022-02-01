@@ -1,0 +1,31 @@
+name : 'Zscaler IAC Scan'
+description: 'Zscaler scanner to identify the vulnerabilities and violations within deployment IAC files'
+
+inputs: # user can input the name inside the name of user variable , descriptions etc
+  GITHUB_TOKEN:
+    description: 'GitHub token'
+    required: true
+  client_id : 
+    description : 'Zscanner ClientID' 
+    required: true
+  client_secret : 
+    description : 'Zscanner Client Secret key' 
+    required : true
+  region:
+    description: 'Zscanner Login Region'
+    required : false
+  iac_dir :
+    description: 'The IAC folder which needs scan'
+    required : false
+  iac_file :
+    description: 'The IAC file that needs to be scanned. This is applicable for single IAC file scans'
+    required : false
+  output_format:
+    description: 'The format of output you want the scanner to write the results to. Available formats are json/csv/yaml/sarif/txt'
+    required : false
+  fail_build :
+    description: 'This is needed if you just want the scanner to highlight the violations in IAC files rather than fail the workflow'
+    required : false
+runs:
+ using: 'node16'
+ main: 'dist/index.js'
