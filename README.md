@@ -25,13 +25,13 @@ on:
     - cron: $cron-weekly
 
 jobs:
-  test:
+  zscaler-iac-scan:
     runs-on: ubuntu-latest
     steps:
       - name : Code Checkout
         uses: actions/checkout@v2
       - name : Zscaler IAC Scan
-        uses : ZscalerCWP/iac-zscaler-action
+        uses : ZscalerCWP/Zscaler-IaC-Action@v1
         id : zscaler-iac-scan
         with:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
@@ -40,12 +40,12 @@ jobs:
           region : 'US'
           iac_dir : 'IAC directory path from root'
           iac_file : 'IAC file path from root'
-          output_format : 'json/yaml/csv/sarif/txt'
-          soft_build : 'false'
+          output_format : 'json/yaml/sarif/human/json+sarif/human+sarif'
+          fail_build : 'false'
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v1
         with:
-          sarif_file: ${{ steps.zscaler-iac-scan.scan_result_path }}
+          sarif_file: ${{ steps.zscaler-iac-scan.sarif_file_path }}
 ```
 
 Setup Guidance :
