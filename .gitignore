@@ -1,7 +1,3 @@
 /node_modules
 /zscanner-installed
 /zscanner
-/src/
-src/action.js
-src/practions/octokitUtils.js
-src/utils/await_request.js
