@@ -1,4 +1,4 @@
-name : 'Zscaler IAC Scan'
+name : 'Zscaler IaC Scan'
 description: 'Zscaler scanner to identify the vulnerabilities and violations within deployment IAC files'
 
 inputs: # user can input the name inside the name of user variable , descriptions etc
