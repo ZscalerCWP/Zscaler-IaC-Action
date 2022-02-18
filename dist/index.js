@@ -17741,10 +17741,11 @@ const executeScan = function () {
                 if (stderr) {
                     console.log(stderr);
                 }
-                if (outputFormat.startsWith('sarif') || outputFormat.endsWith('sarif')) {
+                if (outputFormat.startsWith("sarif") || outputFormat.endsWith("sarif") ||
+                    outputFormat.startsWith("github_sarif") || outputFormat.endsWith("github_sarif")) {
                     core.setOutput('sarif_file_path', process.cwd() + '/result.sarif')
                 }
-                if (outputFormat.startsWith('json')) {
+                if (outputFormat.startsWith("json")) {
                     const output = JSON.parse(stdout);
                     resolve(output);
                 }
