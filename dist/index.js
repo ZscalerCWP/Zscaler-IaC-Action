@@ -17667,7 +17667,8 @@ const login = function (clientId, clientSecretKey) {
     return new Promise((resolve, reject) => {
         console.log('Running zscaler scan');
         const rootDirPath = process.cwd();
-        const initCommand = rootDirPath + util.format(constants.COMMANDS.LOGIN, clientId, clientSecretKey, 'US');
+        const region = core.getInput('region');
+        const initCommand = rootDirPath + util.format(constants.COMMANDS.LOGIN, clientId, clientSecretKey, region);
         cmd.asyncExec(initCommand, null).then((response) => {
             resolve(response);
         }).catch((error) => {
