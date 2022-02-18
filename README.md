@@ -40,12 +40,12 @@ jobs:
           region : 'US'
           iac_dir : 'IAC directory path from root'
           iac_file : 'IAC file path from root'
-          output_format : 'json/yaml/sarif/human/json+sarif/human+sarif'
+          output_format : 'json/yaml/sarif/human/json+github-sarif/human+github-sarif'
           fail_build : 'false'
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v1
         with:
-          sarif_file: ${{ steps.zscaler-iac-scan.sarif_file_path }}
+          sarif_file: ${{ steps.zscaler-iac-scan.outputs.sarif_file_path }}
 ```
 
 Setup Guidance :
