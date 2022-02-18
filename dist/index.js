@@ -17448,11 +17448,8 @@ let constants = {
     },
     AUTH_CONSTANTS : {
        TYPE : "client_credentials",
-       AUDIENCE : "https://api.zscwp.io",
-        CONTENT_TYPE : "application/x-www-form-urlencoded",
-        HOST : "host",
-        CLIENTID : "clientId",
-        SCOPE : "scope",
+       AUDIENCE : "https://api.zscwp.io/iac",
+        CONTENT_TYPE : "application/x-www-form-urlencoded"
     },
     DOWNLOAD_CONSTANTS : {
         DOWNLOAD_DIR : "zscanner_installed",
