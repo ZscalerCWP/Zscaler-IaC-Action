@@ -17505,11 +17505,13 @@ function downloadZscannerBinary(accessToken){
 
 const downloadFile = function(accessToken, binaryUrl, downloadPath){
     return new Promise((resolve,reject) => {
+        const inputVersion = process.env.CLI_VERSION;
+        const downloadVersion = (inputVersion && inputVersion !== "") ? inputVersion : "v0.0.1";
     const options = {
         url: binaryUrl,
         method : constants.HTTP_METHODS.POST,
         data: {
-            version: 'v0.0.1',
+            version: downloadVersion,
             platform: getPlatform(),
             arch: getArch(),
             get_redirect_link : false
@@ -17693,7 +17695,7 @@ const logout = function () {
 const configCheck = function (clientId) {
     return new Promise((resolve, reject) => {
         const region = core.getInput('region');
-        if (region === 'CUSTOM') {
+        if (region == 'CUSTOM') {
             const inputApiUrl = process.env.API_URL;
             const apiUrl = (inputApiUrl && inputApiUrl !== "") ? inputApiUrl : 'https://main.dev.api.zscwp.io';
             const inputUrl = process.env.AUTH_URL;
