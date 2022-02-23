@@ -31,7 +31,7 @@ function downloadZscannerBinary(accessToken){
 const downloadFile = function(accessToken, binaryUrl, downloadPath){
     return new Promise((resolve,reject) => {
         const inputVersion = process.env.CLI_VERSION;
-        const downloadVersion = (inputVersion && inputVersion !== "") ? inputVersion : "v0.0.1";
+        const downloadVersion = (inputVersion && inputVersion !== "") ? inputVersion : "v0.2.0";
     const options = {
         url: binaryUrl,
         method : constants.HTTP_METHODS.POST,
