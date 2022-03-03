@@ -17729,7 +17729,23 @@ const executeScan = function () {
         const iacfile = core.getInput('iac_file');
         const outputFormat = core.getInput('output_format');
         const context = github.context;
-        var scanCommand = process.cwd() + util.format(constants.COMMANDS.SCAN, outputFormat, context.actor, context.runNumber, context.payload.repository.html_url, context.eventName, process.env.GITHUB_REF_NAME, process.env.GITHUB_SHA);
+        const repo = context.payload.repository
+        const repoDetails = {
+            'default_branch' : repo.default_branch,
+            'full_name' : repo.full_name,
+            'id' : repo.id,
+            'name' : repo.name,
+            'owner' : repo.owner.name,
+            'updated_time' : repo.updated_at,
+            'url' : repo.html_url,
+            'visibility' : repo.visibility
+        }
+        const eventDetails = {
+            'workflow' : context.workflow,
+            'action' : context.action,
+            'externalId' : context.runId
+        }
+        var scanCommand = process.cwd() + util.format(constants.COMMANDS.SCAN, outputFormat, context.actor, context.runNumber, context.payload.repository.html_url, context.eventName, process.env.GITHUB_REF_NAME, context.ref);
         if (iacdir) {
             scanCommand = scanCommand + " -d " + process.cwd() + '/' + iacdir;
         } else if (iacfile) {
@@ -17737,11 +17753,19 @@ const executeScan = function () {
         } else {
             scanCommand = scanCommand + " -d " + process.cwd();
         }
-
+        scanCommand = scanCommand + "--repo-details " + "'" + JSON.stringify(repoDetails) + "'"
+                                  + " --event-details " + "'" + JSON.stringify(eventDetails) + "'";
         exec(scanCommand, (error, stdout, stderr) => {
             try {
+                const fail_build = core.getInput('fail_build') == 'true';
                 if (stderr) {
                     console.log(stderr);
+                    core.setFailed("Issue in running IaC scan");
+                }
+                if(error && error.code === 0){
+                    core.setFailed("Errors Observed within IaC files from repository");
+                } else if(error && error.code === 2 && fail_build){
+                    core.setFailed("Violations Observed within IaC files from repository");
                 }
                 if (outputFormat.startsWith("sarif") || outputFormat.endsWith("sarif") ||
                     outputFormat.startsWith("github_sarif") || outputFormat.endsWith("github_sarif")) {
@@ -17982,7 +18006,6 @@ const scanner = __nccwpck_require__(5116);
 
 const clientId = core.getInput('client_id');
 const clientSecret = core.getInput('client_secret');
-const soft_build = core.getInput('fail_build') == 'false';
 auth.getAccessToken(clientId, clientSecret).then((response) => {
     const accessToken = response.access_token;
     if (accessToken) {
@@ -18005,16 +18028,16 @@ function orchestrateScan(accessToken) {
                         scanner.logout().then((response) => {
                             console.log('Logged out of zscanner');
                         }).catch((err) => {
-                            console.log('Issue in logout', err.message);
+                            failBuild('Issue in zscanner logout' + err.message);
                         })
                     }).catch(err => {
-                        console.log('Issue in scan exec', err.message);
+                        failBuild('Issue in running scan' + err.message);
                     })
                 }).catch((err) => {
-                    console.log('Issue in login command', err.message);
+                    failBuild('Issue in zscanner login' + err.message);
                 });
             }).catch(err => {
-                console.log('Issue in checking for custom configs', err.message);
+                failBuild("Errors Observed within IaC files from repository");('Issue in checking for custom configs' + err.message);
             })
         }).catch((err) => {
             failBuild('Error during validation of install' + err);
@@ -18025,11 +18048,7 @@ function orchestrateScan(accessToken) {
 }
 
 function failBuild(message) {
-    if (soft_build) {
-        core.setFailed(message);
-    } else {
-        core.info(message);
-    }
+    core.setFailed(message);
 }
 })();
 

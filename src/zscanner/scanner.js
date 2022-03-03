@@ -69,7 +69,23 @@ const executeScan = function () {
         const iacfile = core.getInput('iac_file');
         const outputFormat = core.getInput('output_format');
         const context = github.context;
-        var scanCommand = process.cwd() + util.format(constants.COMMANDS.SCAN, outputFormat, context.actor, context.runNumber, context.payload.repository.html_url, context.eventName, process.env.GITHUB_REF_NAME, process.env.GITHUB_SHA);
+        const repo = context.payload.repository
+        const repoDetails = {
+            'default_branch' : repo.default_branch,
+            'full_name' : repo.full_name,
+            'id' : repo.id,
+            'name' : repo.name,
+            'owner' : repo.owner.name,
+            'updated_time' : repo.updated_at,
+            'url' : repo.html_url,
+            'visibility' : repo.visibility
+        }
+        const eventDetails = {
+            'workflow' : context.workflow,
+            'action' : context.action,
+            'externalId' : context.runId
+        }
+        var scanCommand = process.cwd() + util.format(constants.COMMANDS.SCAN, outputFormat, context.actor, context.runNumber, context.payload.repository.html_url, context.eventName, process.env.GITHUB_REF_NAME, context.ref);
         if (iacdir) {
             scanCommand = scanCommand + " -d " + process.cwd() + '/' + iacdir;
         } else if (iacfile) {
@@ -77,11 +93,19 @@ const executeScan = function () {
         } else {
             scanCommand = scanCommand + " -d " + process.cwd();
         }
-
+        scanCommand = scanCommand + "--repo-details " + "'" + JSON.stringify(repoDetails) + "'"
+                                  + " --event-details " + "'" + JSON.stringify(eventDetails) + "'";
         exec(scanCommand, (error, stdout, stderr) => {
             try {
+                const fail_build = core.getInput('fail_build') == 'true';
                 if (stderr) {
                     console.log(stderr);
+                    core.setFailed("Issue in running IaC scan");
+                }
+                if(error && error.code === 0){
+                    core.setFailed("Errors Observed within IaC files from repository");
+                } else if(error && error.code === 2 && fail_build){
+                    core.setFailed("Violations Observed within IaC files from repository");
                 }
                 if (outputFormat.startsWith("sarif") || outputFormat.endsWith("sarif") ||
                     outputFormat.startsWith("github_sarif") || outputFormat.endsWith("github_sarif")) {
