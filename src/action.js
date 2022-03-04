@@ -6,7 +6,6 @@ const scanner = require('./zscanner/scanner.js');
 
 const clientId = core.getInput('client_id');
 const clientSecret = core.getInput('client_secret');
-const soft_build = core.getInput('fail_build') == 'false';
 auth.getAccessToken(clientId, clientSecret).then((response) => {
     const accessToken = response.access_token;
     if (accessToken) {
@@ -29,16 +28,16 @@ function orchestrateScan(accessToken) {
                         scanner.logout().then((response) => {
                             console.log('Logged out of zscanner');
                         }).catch((err) => {
-                            console.log('Issue in logout', err.message);
+                            failBuild('Issue in zscanner logout' + err.message);
                         })
                     }).catch(err => {
-                        console.log('Issue in scan exec', err.message);
+                        failBuild('Issue in running scan' + err.message);
                     })
                 }).catch((err) => {
-                    console.log('Issue in login command', err.message);
+                    failBuild('Issue in zscanner login' + err.message);
                 });
             }).catch(err => {
-                console.log('Issue in checking for custom configs', err.message);
+                failBuild("Errors Observed within IaC files from repository");('Issue in checking for custom configs' + err.message);
             })
         }).catch((err) => {
             failBuild('Error during validation of install' + err);
@@ -49,9 +48,5 @@ function orchestrateScan(accessToken) {
 }
 
 function failBuild(message) {
-    if (soft_build) {
-        core.setFailed(message);
-    } else {
-        core.info(message);
-    }
+    core.setFailed(message);
 }
