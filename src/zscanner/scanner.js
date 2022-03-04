@@ -93,7 +93,7 @@ const executeScan = function () {
         } else {
             scanCommand = scanCommand + " -d " + process.cwd();
         }
-        scanCommand = scanCommand + "--repo-details " + "'" + JSON.stringify(repoDetails) + "'"
+        scanCommand = scanCommand + " --repo-details " + "'" + JSON.stringify(repoDetails) + "'"
                                   + " --event-details " + "'" + JSON.stringify(eventDetails) + "'";
         exec(scanCommand, (error, stdout, stderr) => {
             try {
