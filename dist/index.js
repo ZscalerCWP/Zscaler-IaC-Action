@@ -17511,7 +17511,7 @@ const downloadFile = function(accessToken, binaryUrl, downloadPath){
         data: {
             platform: getPlatform(),
             arch: getArch(),
-            get_redirect_link : "false"
+            get_redirect_link : false
         },
         headers: {
             'Authorization': 'Bearer ' + accessToken
