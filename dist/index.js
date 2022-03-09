@@ -17725,6 +17725,7 @@ const executeScan = function () {
         const iacdir = core.getInput('iac_dir');
         const iacfile = core.getInput('iac_file');
         const outputFormat = core.getInput('output_format');
+        const logLevel = core.getInput('log_level');
         const context = github.context;
         const repo = context.payload.repository
         const repoDetails = {
@@ -17752,6 +17753,9 @@ const executeScan = function () {
         }
         scanCommand = scanCommand + " --repo-details " + "'" + JSON.stringify(repoDetails) + "'"
                                   + " --event-details " + "'" + JSON.stringify(eventDetails) + "'";
+        if(logLevel){
+            scanCommand = scanCommand + " -l " + logLevel;
+        }
         exec(scanCommand, (error, stdout, stderr) => {
             try {
                 const fail_build = core.getInput('fail_build') == 'true';
