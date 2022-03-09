@@ -26,6 +26,8 @@ inputs: # user can input the name inside the name of user variable , description
   fail_build :
     description: 'This is needed if you just want the scanner to highlight the violations in IAC files rather than fail the workflow'
     required : false
+  log_level :
+    description : 'This is to run the scanner in a specific log mode. Accepted Levels are debug/info/warn/error/panic/fatal'
 runs:
  using: 'node16'
  main: 'dist/index.js'
