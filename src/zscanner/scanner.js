@@ -84,9 +84,10 @@ const executeScan = function () {
         const eventDetails = {
             'workflow' : context.workflow,
             'action' : context.action,
-            'externalId' : context.runId
+            'externalId' : context.runId,
+            'trigger_type' : context.eventName
         }
-        var scanCommand = process.cwd() + util.format(constants.COMMANDS.SCAN, outputFormat, context.actor, context.runNumber, context.payload.repository.html_url, context.eventName, process.env.GITHUB_REF_NAME, context.ref);
+        var scanCommand = process.cwd() + util.format(constants.COMMANDS.SCAN, outputFormat, context.actor, context.runNumber, context.payload.repository.html_url, "BUILD", process.env.GITHUB_REF_NAME, context.sha);
         if (iacdir) {
             scanCommand = scanCommand + " -d " + process.cwd() + '/' + iacdir;
         } else if (iacfile) {
