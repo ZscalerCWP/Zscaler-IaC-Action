@@ -1,3 +1,11 @@
 /node_modules
 /zscanner-installed
 /zscanner
+
+### macOS ###
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+.dccache
