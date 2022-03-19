@@ -7,7 +7,7 @@ Please take a look into the below detailed steps to start using this as part of 
 
 Steps to use Zscaler IAC code scanning on repo :
 
-- Register yourself as a security admin on https://app.zscwp.io/.
+- Register yourself as a security admin on https://zcpcloud.net/.
 - Proceed with Github Actions onboarding by giving the unique identifier of your choice.
 - Configure the generated zscaler clientId and secret key as part of github secrets on the repo or organisation level based on the need.
 - Include below yml file in .github/workflows directory in your repository to start with the scan.
@@ -34,7 +34,6 @@ jobs:
         uses : ZscalerCWP/Zscaler-IaC-Action@v1
         id : zscaler-iac-scan
         with:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           client_id : ${{ secrets.ZSCANNER_CLIENT_ID }}
           client_secret : ${{ secrets.ZSCANNER_CLIENT_SECRET }}
           region : 'US'
