@@ -17693,10 +17693,8 @@ const configCheck = function (clientId) {
     return new Promise((resolve, reject) => {
         const region = core.getInput('region');
         if (region === 'CUSTOM') {
-            const inputApiUrl = process.env.API_URL;
-            const apiUrl = (inputApiUrl && inputApiUrl !== "") ? inputApiUrl : 'https://main.dev.api.zscwp.io';
-            const inputUrl = process.env.AUTH_URL;
-            const oAuthUrl = (inputUrl && inputUrl !== "") ? inputUrl : 'https://zscaler-poc.us.auth0.com';
+            const apiUrl = process.env.API_URL;
+            const oAuthUrl = process.env.AUTH_URL;
             const custom_config = {
                 'host': apiUrl,
                 'auth': {
