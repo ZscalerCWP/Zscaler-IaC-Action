@@ -14,7 +14,7 @@ function downloadZscannerBinary(accessToken){
     
     if(!fs.existsSync(filePath)){
         const inputApiUrl = process.env.API_URL;
-        const apiUrl = (inputApiUrl && inputApiUrl !== "") ? inputApiUrl : 'https://api.zscwp.io';
+        const apiUrl = (inputApiUrl && inputApiUrl !== "") ? inputApiUrl : 'https://api.zcpcloud.net';
         const binaryUrl = apiUrl + '/iac/onboarding/v1/cli/download';
         downloadFile(accessToken, binaryUrl, filePath).then((result) => {
             resolve(result);

@@ -37,9 +37,9 @@ const configCheck = function (clientId) {
         const region = core.getInput('region');
         if (region === 'CUSTOM') {
             const inputApiUrl = process.env.API_URL;
-            const apiUrl = (inputApiUrl && inputApiUrl !== "") ? inputApiUrl : 'https://main.dev.api.zscwp.io';
+            const apiUrl = (inputApiUrl && inputApiUrl !== "") ? inputApiUrl : 'https://api.zcpcloud.net';
             const inputUrl = process.env.AUTH_URL;
-            const oAuthUrl = (inputUrl && inputUrl !== "") ? inputUrl : 'https://zscaler-poc.us.auth0.com';
+            const oAuthUrl = (inputUrl && inputUrl !== "") ? inputUrl : 'https://z-cwp-prod-us.us.auth0.com';
             const custom_config = {
                 'host': apiUrl,
                 'auth': {
