@@ -44,11 +44,10 @@ const downloadFile = function(accessToken, binaryUrl, downloadPath){
         responseType: constants.SCANNER_RESP_TYPE,
     };
 
-    request(options).then((response) => {
-        console.log('Responding to download');
+    request(options).then((response) => {        
         if(response.data instanceof stream.Stream) {
             writeResponseToFile(response.data, downloadPath).then((writeStatus) => {
-                console.log('Download Successful');
+                console.log('Zscaler IaC Scanner Download Successful');
                 resolve(writeStatus);
             })
         } else {

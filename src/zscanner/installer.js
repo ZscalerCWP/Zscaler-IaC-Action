@@ -7,11 +7,9 @@ async function extractAndInstallBinary(){
     return new Promise((resolve,reject) => {
         const extractionPath = constants.DOWNLOAD_CONSTANTS.DOWNLOAD_DIR + constants.DOWNLOAD_CONSTANTS.EXTRACTION_SUBDIR;
         fs.mkdirSync(extractionPath, { recursive: true });
-        const downloadedPath = process.cwd() + '/' + constants.DOWNLOAD_CONSTANTS.DOWNLOAD_DIR + constants.DOWNLOAD_CONSTANTS.DOWNLOAD_SUBDIR + constants.DOWNLOAD_CONSTANTS.DOWNLOAD_FILE;
-        console.log(fs.existsSync(downloadedPath));
+        const downloadedPath = process.cwd() + '/' + constants.DOWNLOAD_CONSTANTS.DOWNLOAD_DIR + constants.DOWNLOAD_CONSTANTS.DOWNLOAD_SUBDIR + constants.DOWNLOAD_CONSTANTS.DOWNLOAD_FILE;        
         extractFile(downloadedPath,extractionPath).then((status) => {
-            if(status){
-                console.log('Came into installation part',status);
+            if(status){                
                 installBinary(extractionPath).then((status) => {
                      resolve(status);
                 });
@@ -46,10 +44,9 @@ async function installBinary(extractedFileDir){
         const installationDir = extractedFileDir.replace(/(\s+)/g, '\\$1');
         binaryInstallPath = binaryInstallPath.replace(/(\s+)/g, '\\$1');
         const binaryName = '/zscanner-iii';
-        const finalPath = installationDir + binaryName;
-        console.log('install ' + binaryInstallPath + ' ' + installationDir);
+        const finalPath = installationDir + binaryName;        
         cmd.asyncExec('install ' + binaryInstallPath + ' ' + process.cwd()).then((response) => {
-            console.log('Installation done', response);
+            console.log('Zscaler IaC Scanner Installation completed');
             resolve(finalPath);
         }).catch((error) => {
             console.log(error);

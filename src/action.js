@@ -24,7 +24,6 @@ function orchestrateScan(accessToken) {
                 scanner.login(clientId, clientSecret).then((response) => {
                     scanner.executeScan().then((response) => {
                         console.log(response);
-
                         scanner.logout().then((response) => {
                             console.log('Logged out of zscanner');
                         }).catch((err) => {
