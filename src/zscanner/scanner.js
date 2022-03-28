@@ -39,7 +39,7 @@ const configCheck = function (clientId) {
             const inputApiUrl = process.env.API_URL;
             const apiUrl = (inputApiUrl && inputApiUrl !== "") ? inputApiUrl : 'https://api.zcpcloud.net';
             const inputUrl = process.env.AUTH_URL;
-            const oAuthUrl = (inputUrl && inputUrl !== "") ? inputUrl : 'https://z-cwp-prod-us.us.auth0.com';
+            const oAuthUrl = (inputUrl && inputUrl !== "") ? inputUrl : 'https://auth.us.zcpcloud.net';
             const custom_config = {
                 'host': apiUrl,
                 'auth': {
