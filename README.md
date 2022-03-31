@@ -7,7 +7,7 @@ To start using the Zscaler IaC Scan action as part of your workflows, complete t
 1. Log into the Zscaler Workload Posture (ZWP) Admin Portal.
 2. Within the ZWP Admin Portal, start the GitHub Actions onboarding process. Make sure you create a unique identifier and note the generated client ID and client secret key.
 3. Within GitHub, provide the generated Zscaler client ID and client secret key as part of GitHub secrets on the repository or at the organization level.
-4. Include a YAML file in the /github/workflows directory to start the scan. A sample YAML file is provided below. The YAML script can also be included as part of the existing workflow, if desired.
+4. Include a YAML file in the .github/workflows directory to start the scan. A sample YAML file is provided below. The YAML script can also be included as part of the existing workflow, if desired.
 
 Sample YAML File:
 
