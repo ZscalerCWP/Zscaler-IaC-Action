@@ -13,7 +13,7 @@ inputs: # user can input the name inside the name of user variable , description
     required : true
   region:
     description: 'Zscanner Login Region'
-    required : false
+    required : true
   iac_dir :
     description: 'The IAC folder which needs scan'
     required : false

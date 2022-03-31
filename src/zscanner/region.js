@@ -4,7 +4,7 @@ var region = {
         'api_url' : 'https://api.zcpcloud.net'
     },
     'CUSTOM' : {
-        'auth_utl' : process.env.AUTH_URL,
+        'auth_url' : process.env.AUTH_URL,
         'api_url' : process.env.API_URL
     }
 }

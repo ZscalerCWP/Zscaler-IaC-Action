@@ -17659,7 +17659,7 @@ var region = {
         'api_url' : 'https://api.zcpcloud.net'
     },
     'CUSTOM' : {
-        'auth_utl' : process.env.AUTH_URL,
+        'auth_url' : process.env.AUTH_URL,
         'api_url' : process.env.API_URL
     }
 }
@@ -18027,6 +18027,17 @@ const scanner = __nccwpck_require__(5116);
 
 const clientId = core.getInput('client_id');
 const clientSecret = core.getInput('client_secret');
+const region = core.getInput('region');
+
+if(typeof clientId === 'undefined' || clientId == null|| clientId.length<1 ){
+    core.setFailed('client_id input is required and not supplied.');
+}
+if(typeof clientSecret === 'undefined' || clientSecret == null|| clientSecret.length<1 ){
+    core.setFailed('client_secret input is required and not supplied.');
+}
+if(typeof region === 'undefined' || region == null|| region.length<1 ){
+    core.setFailed('region input is required and not supplied.');
+}
 auth.getAccessToken(clientId, clientSecret).then((response) => {
     const accessToken = response.access_token;
     if (accessToken) {
