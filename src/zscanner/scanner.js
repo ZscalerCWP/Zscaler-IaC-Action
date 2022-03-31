@@ -36,14 +36,10 @@ const configCheck = function (clientId) {
     return new Promise((resolve, reject) => {
         const region = core.getInput('region');
         if (region === 'CUSTOM') {
-            const inputApiUrl = process.env.API_URL;
-            const apiUrl = (inputApiUrl && inputApiUrl !== "") ? inputApiUrl : 'https://api.zcpcloud.net';
-            const inputUrl = process.env.AUTH_URL;
-            const oAuthUrl = (inputUrl && inputUrl !== "") ? inputUrl : 'https://auth.us.zcpcloud.net';
             const custom_config = {
-                'host': apiUrl,
+                'host': process.env.API_URL,
                 'auth': {
-                    'host': oAuthUrl,
+                    'host': process.env.AUTH_URL,
                     'clientId': clientId,
                     'scope': 'offline_access_profile',
                     'audience': constants.AUTH_CONSTANTS.AUDIENCE
@@ -103,19 +99,26 @@ const executeScan = function () {
         exec(scanCommand, (error, stdout, stderr) => {
             try {
                 const fail_build = core.getInput('fail_build') == 'true';
+                var scan_status = 'passed';
                 if (stderr) {
                     console.log(stderr);
+                    scan_status = 'failed';
                     core.setFailed("Issue in running IaC scan");
                 }
                 if(error && error.code === 0){
+                    scan_status = 'failed';
                     core.setFailed("Errors Observed within IaC files from repository");
                 } else if(error && error.code === 2 && fail_build){
+                    scan_status = 'failed';
                     core.setFailed("Violations Observed within IaC files from repository");
+                } else {
+                    scan_status = 'passed';
                 }
                 if (outputFormat.startsWith("sarif") || outputFormat.endsWith("sarif") ||
                     outputFormat.startsWith("github_sarif") || outputFormat.endsWith("github_sarif")) {
                     core.setOutput('sarif_file_path', process.cwd() + '/result.sarif')
                 }
+                core.setOutput('scan_status',scan_status);
                 if (outputFormat.startsWith("json")) {
                     const output = JSON.parse(stdout);
                     resolve(output);

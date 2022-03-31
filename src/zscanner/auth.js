@@ -1,13 +1,14 @@
 const axios = require('../utils/await_request.js')
 const qse = require('query-string');
 const constants = require('./constants');
+const region = require('./region')
 const core = require("@actions/core");
 
 function getAccessToken(clientId,clientSecretKey){
     return new Promise((resolve,reject) => {
         try {
-            const inputUrl = process.env.AUTH_URL;
-            const oAuthUrl = (inputUrl && inputUrl !== "") ? inputUrl : 'https://auth.us.zcpcloud.net';
+            const inputRegion = core.getInput('region');
+            const oAuthUrl = region[inputRegion].auth_url
             const options = {
                 url: oAuthUrl + '/oauth/token',
                 data: qse.stringify({
