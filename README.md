@@ -2,7 +2,7 @@
 
 Zscaler Infrastructure as Code (IaC) Scan action detects security violations in the IaC deployment files that are placed within your GitHub repositories.
 
-To start using the Zscaler IaC Scan action as part of your workflows, complete the following steps: 
+To start using the Zscaler IaC Scan action as part of your workflows, complete the following steps:
 
 1. Log into the Zscaler Workload Posture (ZWP) Admin Portal.
 2. Within the ZWP Admin Portal, start the GitHub Actions onboarding process. Make sure you create a unique identifier and note the generated client ID and client secret key.
@@ -43,12 +43,12 @@ jobs:
           sarif_file: ${{ steps.zscaler-iac-scan.outputs.sarif_file_path }}
 ```
 
-Setup Guidance :
+Setup Guidelines:
 
-1. Setup repo secrets : [Github secrets](https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets)
-2. Setup github workflows : [Github Actions](https://docs.github.com/en/actions/learn-github-actions/)
+1. Set up repository secrets: [GitHub secrets](https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets)
+2. Set up GitHub workflows: [GitHub Actions](https://docs.github.com/en/actions/learn-github-actions/)
 
-Configuration Parameters :
+Configuration Parameters:
 
 1. client_id and client_secret: Generated from the ZWP Admin Portal as mentioned in step 2 above.
 2. region: The region (e.g., US) you use for ZWP.
@@ -56,3 +56,7 @@ Configuration Parameters :
 4. iac_file: File path from root where you want to trigger the IaC scan. This path is not required when iac_dir is present.
 5. output_format: The Zscaler IaC Scan results/output is written to the desired file formats as specified in the YAML script and placed in the workspace where the code is checked out during a job trigger.
 6. fail_build: Set this value to true or false. If you don't want the Zscaler IaC Scan app to fail the workflow build when severe violations are found post the scan process, set the value to false.
+
+Action Outputs : 
+1.sarif_file_path : The path to the generated sarif file in the workspace.
+2.scan_status : The final status of the IaC scan. It is either passed/failed.

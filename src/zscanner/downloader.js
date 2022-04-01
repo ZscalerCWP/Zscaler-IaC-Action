@@ -4,6 +4,7 @@ const stream = require('stream');
 const os = require('os');
 const constants = require('./constants');
 const core = require("@actions/core");
+const region = require('./region')
 
 function downloadZscannerBinary(accessToken){
     return new Promise((resolve,reject) => {
@@ -13,8 +14,8 @@ function downloadZscannerBinary(accessToken){
     const filePath = constants.DOWNLOAD_CONSTANTS.DOWNLOAD_DIR + constants.DOWNLOAD_CONSTANTS.DOWNLOAD_SUBDIR + fileName;
     
     if(!fs.existsSync(filePath)){
-        const inputApiUrl = process.env.API_URL;
-        const apiUrl = (inputApiUrl && inputApiUrl !== "") ? inputApiUrl : 'https://api.zcpcloud.net';
+        const inputRegion = core.getInput('region');
+        const apiUrl = region[inputRegion].api_url;
         const binaryUrl = apiUrl + '/iac/onboarding/v1/cli/download';
         downloadFile(accessToken, binaryUrl, filePath).then((result) => {
             resolve(result);

@@ -1,10 +1,10 @@
 name : 'Zscaler IaC Scan'
 description: 'Zscaler scanner to identify the vulnerabilities and violations within deployment IAC files'
-
+author : 'Zscaler CWP'
+branding:
+  icon: 'shield'
+  color: 'blue'
 inputs: # user can input the name inside the name of user variable , descriptions etc
-  GITHUB_TOKEN:
-    description: 'GitHub token'
-    required: true
   client_id : 
     description : 'Zscanner ClientID' 
     required: true
@@ -13,7 +13,7 @@ inputs: # user can input the name inside the name of user variable , description
     required : true
   region:
     description: 'Zscanner Login Region'
-    required : false
+    required : true
   iac_dir :
     description: 'The IAC folder which needs scan'
     required : false
@@ -28,6 +28,11 @@ inputs: # user can input the name inside the name of user variable , description
     required : false
   log_level :
     description : 'This is to run the scanner in a specific log mode. Accepted Levels are debug/info/warn/error/panic/fatal'
+outputs:
+  sarif_file_path:
+    description: 'Path for the sarif file generated on IaC scan'
+  scan_status:
+    description: 'Final status of IaC scan. Can be passed/failed/aborted'
 runs:
  using: 'node16'
  main: 'dist/index.js'
