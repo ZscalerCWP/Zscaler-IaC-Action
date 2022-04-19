@@ -58,5 +58,5 @@ Configuration Parameters:
 6. fail_build: Set this value to true or false. If you don't want the Zscaler IaC Scan app to fail the workflow build when severe violations are found post the scan process, set the value to false.
 
 Action Outputs : 
-1.sarif_file_path : The path to the generated sarif file in the workspace.
-2.scan_status : The final status of the IaC scan. It is either passed/failed.
+1. sarif_file_path : The path to the generated sarif file in the workspace.
+2. scan_status : The final status of the IaC scan. It is either passed/failed.

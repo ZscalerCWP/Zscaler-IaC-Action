@@ -28,6 +28,7 @@ inputs: # user can input the name inside the name of user variable , description
     required : false
   log_level :
     description : 'This is to run the scanner in a specific log mode. Accepted Levels are debug/info/warn/error/panic/fatal'
+    required : false
 outputs:
   sarif_file_path:
     description: 'Path for the sarif file generated on IaC scan'
