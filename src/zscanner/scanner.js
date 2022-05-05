@@ -11,7 +11,9 @@ const login = function (clientId, clientSecretKey) {
         const rootDirPath = process.cwd();
         const region = core.getInput('region');
         const initCommand = rootDirPath + util.format(constants.COMMANDS.LOGIN, clientId, clientSecretKey, region);
+        console.log("Login command" + initCommand);
         cmd.asyncExec(initCommand, null).then((response) => {
+            console.log("Zscanner login is successful");
             resolve(response);
         }).catch((error) => {
             console.log('Error in storing access_token in context', error);
@@ -46,6 +48,7 @@ const configCheck = function (clientId) {
                 }
             }
             const customRegionCmd = process.cwd() + util.format(constants.COMMANDS.CONFIG_ADD, 'custom_region', "'" + JSON.stringify(custom_config) + "'");
+            console.log("Zscanner Custom Region Config Command ::" + customRegionCmd);
             cmd.asyncExec(customRegionCmd, null).then((response) => {
                 console.log(response);
                 resolve(response);
