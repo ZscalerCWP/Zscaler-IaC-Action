@@ -17828,6 +17828,7 @@ const executeScan = function () {
         if(logLevel){
             scanCommand = scanCommand + " -l " + logLevel;
         }
+        console.log(scanCommand);
         exec(scanCommand, (error, stdout, stderr) => {
             try {
                 const fail_build = core.getInput('fail_build') == 'true';
@@ -17866,6 +17867,7 @@ const executeScan = function () {
 module.exports = {
     executeScan, login, logout, configCheck
 }
+
 
 /***/ }),
 
