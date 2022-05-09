@@ -26,7 +26,7 @@ function getAccessToken(clientId,clientSecretKey){
                   resolve(response.data);
               }).catch((error) => {
                   console.log('Error in authentication' , error.message);
-                  // reject(error);
+                  reject(error);
               })
           } catch(err){
               reject(err);

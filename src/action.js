@@ -22,15 +22,14 @@ auth.getAccessToken(clientId, clientSecret).then((response) => {
     if (accessToken) {
         orchestrateScan(accessToken);
     } else {
-        failBuild('Access not granted to proceed IAC scan');
+        failBuild('Authorization failed');
     }
 })
 
 function orchestrateScan(accessToken) {
-    core.info('Scan process Started at ::' + new Date());
+    core.info('IaC Scan Started at ::' + new Date());
     downloader.downloadZscannerBinary(accessToken).then((response) => {
         installer.extractAndInstallBinary().then((response) => {
-            console.log(response);
             scanner.configCheck(clientId).then((response) => {
                 scanner.login(clientId, clientSecret).then((response) => {
                     scanner.executeScan().then((response) => {
@@ -47,7 +46,7 @@ function orchestrateScan(accessToken) {
                     failBuild('Issue in zscanner login' + err.message);
                 });
             }).catch(err => {
-                failBuild("Errors Observed within IaC files from repository");('Issue in checking for custom configs' + err.message);
+                failBuild('Issue in checking for custom configs' + err.message);
             })
         }).catch((err) => {
             failBuild('Error during validation of install' + err);

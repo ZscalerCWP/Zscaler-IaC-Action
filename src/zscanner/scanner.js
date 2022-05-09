@@ -11,7 +11,7 @@ const login = function (clientId, clientSecretKey) {
         const rootDirPath = process.cwd();
         const region = core.getInput('region');
         const initCommand = rootDirPath + util.format(constants.COMMANDS.LOGIN, clientId, clientSecretKey, region);
-        console.log("Login command" + initCommand);
+        console.log("Zscanner Login command" + initCommand);
         cmd.asyncExec(initCommand, null).then((response) => {
             console.log("Zscanner login is successful");
             resolve(response);
@@ -64,12 +64,15 @@ const configCheck = function (clientId) {
 
 const executeScan = function () {
     return new Promise((resolve, reject) => {
+
         const iacdir = core.getInput('iac_dir');
         const iacfile = core.getInput('iac_file');
         const outputFormat = core.getInput('output_format');
         const logLevel = core.getInput('log_level');
         const context = github.context;
+        console.log(context);
         const repo = context.payload.repository
+        var branchName = process.env.GITHUB_REF_NAME;
         const repoDetails = {
             'default_branch' : repo.default_branch,
             'full_name' : repo.full_name,
@@ -80,13 +83,29 @@ const executeScan = function () {
             'url' : repo.html_url,
             'visibility' : repo.visibility
         }
-        const eventDetails = {
+        var eventDetails = {
             'workflow' : context.workflow,
             'action' : context.action,
             'externalId' : context.runId,
-            'trigger_type' : context.eventName
+            'trigger_type' : context.eventName,
+            'user_url' : context.payload.sender.html_url,
+            'user_avatar' : context.payload.sender.avatar_url,
         }
-        var scanCommand = process.cwd() + util.format(constants.COMMANDS.SCAN, outputFormat, context.actor, context.runNumber, context.payload.repository.html_url, "BUILD", process.env.GITHUB_REF_NAME, context.sha);
+
+        if (context.eventName === "push") {
+            eventDetails.compare_url = context.payload.compare;
+            eventDetails.commit_url = context.payload.head_commit.url;
+        } else if (context.eventName === "pull_request"){
+            eventDetails.pr_url = context.payload.pull_request.html_url;
+            eventDetails.diff_url = context.payload.pull_request.diff_url;
+            eventDetails.head_url = context.payload.pull_request.head.repo.html_url;
+            eventDetails.base_url = context.payload.pull_request.base.repo.html_url;
+            eventDetails.created_at = context.payload.pull_request.created_at;
+            eventDetails.updated_at = context.payload.pull_request.updated_at;
+            branchName = context.payload.pull_request.head.ref;
+        }
+
+        var scanCommand = process.cwd() + util.format(constants.COMMANDS.SCAN, outputFormat, context.actor, context.runNumber, context.payload.repository.html_url, "BUILD", branchName, context.sha);
         if (iacdir) {
             scanCommand = scanCommand + " -d " + process.cwd() + '/' + iacdir;
         } else if (iacfile) {
