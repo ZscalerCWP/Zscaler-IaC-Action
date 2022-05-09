@@ -23,7 +23,7 @@ function downloadZscannerBinary(accessToken){
             reject(err);
         });
     } else {
-        reject('Binary downloaded');
+        reject('Zscanner CLI already downloaded');
     } 
     })
       
