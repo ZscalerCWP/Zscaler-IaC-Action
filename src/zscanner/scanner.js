@@ -70,7 +70,6 @@ const executeScan = function () {
         const outputFormat = core.getInput('output_format');
         const logLevel = core.getInput('log_level');
         const context = github.context;
-        console.log(context);
         const repo = context.payload.repository
         var branchName = process.env.GITHUB_REF_NAME;
         const repoDetails = {
