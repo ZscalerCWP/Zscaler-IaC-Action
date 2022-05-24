@@ -1,7 +1,7 @@
 var region = {
     'US' : {
-        'auth_url' : 'https://auth.us.zcpcloud.net',
-        'api_url' : 'https://api.zcpcloud.net'
+        'auth_url' : 'https://auth.us.zpccloud.net',
+        'api_url' : 'https://api.zpccloud.net'
     },
     'CUSTOM' : {
         'auth_url' : process.env.AUTH_URL,
