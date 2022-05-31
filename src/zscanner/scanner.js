@@ -8,9 +8,8 @@ const exec = require('child_process').exec;
 const login = function (clientId, clientSecretKey) {
     return new Promise((resolve, reject) => {
         console.log('Running zscaler scan');
-        const rootDirPath = process.cwd();
         const region = core.getInput('region');
-        const initCommand = rootDirPath + util.format(constants.COMMANDS.LOGIN, clientId, clientSecretKey, region);
+        const initCommand = getBinaryPath() + util.format(constants.COMMANDS.LOGIN, clientId, clientSecretKey, region);
         console.log("Zscanner Login command" + initCommand);
         cmd.asyncExec(initCommand, null).then((response) => {
             console.log("Zscanner login is successful");
@@ -25,7 +24,7 @@ const login = function (clientId, clientSecretKey) {
 
 const logout = function () {
     return new Promise((resolve, reject) => {
-        const logoutCommand = process.cwd() + constants.COMMANDS.LOGOUT;
+        const logoutCommand = getBinaryPath() + constants.COMMANDS.LOGOUT;
         cmd.asyncExec(logoutCommand, null).then((response) => {
             resolve(response);
         }).catch((error) => {
@@ -47,7 +46,7 @@ const configCheck = function (clientId) {
                     'audience': constants.AUTH_CONSTANTS.AUDIENCE
                 }
             }
-            const customRegionCmd = process.cwd() + util.format(constants.COMMANDS.CONFIG_ADD, 'custom_region', "'" + JSON.stringify(custom_config) + "'");
+            const customRegionCmd = getBinaryPath() + util.format(constants.COMMANDS.CONFIG_ADD, 'custom_region', getCustomRegionString(custom_config));
             console.log("Zscanner Custom Region Config Command ::" + customRegionCmd);
             cmd.asyncExec(customRegionCmd, null).then((response) => {
                 console.log(response);
@@ -56,9 +55,10 @@ const configCheck = function (clientId) {
                 console.log('Error in storing custom_region in context', error);
                 reject(error);
             })
-
+        } else{
+            resolve('');
         }
-        resolve('');
+
     });
 }
 
@@ -70,7 +70,6 @@ const executeScan = function () {
         const outputFormat = core.getInput('output_format');
         const logLevel = core.getInput('log_level');
         const context = github.context;
-        console.log(context);
         const repo = context.payload.repository
         var branchName = process.env.GITHUB_REF_NAME;
         const repoDetails = {
@@ -105,7 +104,7 @@ const executeScan = function () {
             branchName = context.payload.pull_request.head.ref;
         }
 
-        var scanCommand = process.cwd() + util.format(constants.COMMANDS.SCAN, outputFormat, context.actor, context.runNumber, context.payload.repository.html_url, "BUILD", branchName, context.sha);
+        var scanCommand = getBinaryPath() + util.format(constants.COMMANDS.SCAN, outputFormat, context.actor, context.runNumber, context.payload.repository.html_url, "BUILD", branchName, context.sha);
         if (iacdir) {
             scanCommand = scanCommand + " -d " + process.cwd() + '/' + iacdir;
         } else if (iacfile) {
@@ -154,6 +153,21 @@ const executeScan = function () {
         })
     })
 }
+
+const getBinaryPath = function(){
+    if (process.platform === "win32"){
+        return "zscanner ";
+    }
+    return "./zscanner ";
+}
+
+const getCustomRegionString = function(custom_config){
+    if (process.platform === "win32"){
+        return "\"" + JSON.stringify(JSON.stringify(custom_config)) + "\"";
+    }
+    return "'" + JSON.stringify(custom_config) + "'";
+}
+
 module.exports = {
     executeScan, login, logout, configCheck
 }
