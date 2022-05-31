@@ -17788,8 +17788,8 @@ const executeScan = function () {
         } else {
             scanCommand = scanCommand + " -d " + process.cwd();
         }
-        scanCommand = scanCommand + " --repo-details " + getJsonString(repoDetails)
-                                  + " --event-details " + getJsonString(eventDetails);
+        scanCommand = scanCommand + " --repo-details " + "'" + JSON.stringify(repoDetails) + "'"
+                                  + " --event-details " + "'" + JSON.stringify(eventDetails) + "'";
         if(logLevel){
             scanCommand = scanCommand + " -l " + logLevel;
         }
