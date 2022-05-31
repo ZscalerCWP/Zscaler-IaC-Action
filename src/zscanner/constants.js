@@ -15,10 +15,10 @@ let constants = {
         EXTRACTION_SUBDIR : "/extract"
     },
     COMMANDS : {
-        LOGIN : "/zscanner login cc -m cicd --client-id %s --client-secret %s -r %s",
-        SCAN : "/zscanner scan -m cicd --sub-type GITHUB_ACTION --repo-type GITHUB -o %s --triggered-by %s --event-id %s --repo %s --event-type %s --branch %s --ref %s",
-        LOGOUT : "/zscanner logout -m cicd",
-        CONFIG_ADD : "/zscanner config add -m cicd -k %s -v %s",
+        LOGIN : "login cc -m cicd --client-id %s --client-secret %s -r %s",
+        SCAN : "scan -m cicd --sub-type GITHUB_ACTION --repo-type GITHUB -o %s --triggered-by %s --event-id %s --repo %s --event-type %s --branch %s --ref %s",
+        LOGOUT : "logout -m cicd",
+        CONFIG_ADD : "config add -m cicd -k %s -v %s",
     },
     SCANNER_RESP_TYPE : "stream"
 }
