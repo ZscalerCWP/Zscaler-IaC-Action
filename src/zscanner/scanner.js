@@ -46,7 +46,7 @@ const configCheck = function (clientId) {
                     'audience': constants.AUTH_CONSTANTS.AUDIENCE
                 }
             }
-            const customRegionCmd = getBinaryPath() + util.format(constants.COMMANDS.CONFIG_ADD, 'custom_region', getCustomRegionString(custom_config));
+            const customRegionCmd = getBinaryPath() + util.format(constants.COMMANDS.CONFIG_ADD, 'custom_region', getJsonString(custom_config));
             console.log("Zscanner Custom Region Config Command ::" + customRegionCmd);
             cmd.asyncExec(customRegionCmd, null).then((response) => {
                 console.log(response);
@@ -112,8 +112,8 @@ const executeScan = function () {
         } else {
             scanCommand = scanCommand + " -d " + process.cwd();
         }
-        scanCommand = scanCommand + " --repo-details " + "'" + JSON.stringify(repoDetails) + "'"
-                                  + " --event-details " + "'" + JSON.stringify(eventDetails) + "'";
+        scanCommand = scanCommand + " --repo-details " + getJsonString(repoDetails)
+                                  + " --event-details " + getJsonString(eventDetails);
         if(logLevel){
             scanCommand = scanCommand + " -l " + logLevel;
         }
@@ -161,11 +161,11 @@ const getBinaryPath = function(){
     return "./zscanner ";
 }
 
-const getCustomRegionString = function(custom_config){
+const getJsonString = function(jsonObj){
     if (process.platform === "win32"){
-        return "\"" + JSON.stringify(JSON.stringify(custom_config)) + "\"";
+        return "\"" + JSON.stringify(JSON.stringify(jsonObj)) + "\"";
     }
-    return "'" + JSON.stringify(custom_config) + "'";
+    return "'" + JSON.stringify(jsonObj) + "'";
 }
 
 module.exports = {
