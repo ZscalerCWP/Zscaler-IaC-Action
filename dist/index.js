@@ -17839,7 +17839,16 @@ const getBinaryPath = function(){
 
 const getJsonString = function(jsonObj){
     if (process.platform === "win32"){
-        return "\"" + JSON.stringify(JSON.stringify(jsonObj)) + "\"";
+        var myJSONString = JSON.stringify(jsonObj);
+        var myEscapedJSONString = myJSONString.replace(/\\n/g, "\\n")
+            .replace(/\\'/g, "\\'")
+            .replace(/\\"/g, '\\"')
+            .replace(/\\&/g, "\\&")
+            .replace(/\\r/g, "\\r")
+            .replace(/\\t/g, "\\t")
+            .replace(/\\b/g, "\\b")
+            .replace(/\\f/g, "\\f");
+        return "\"" + myEscapedJSONString + "\"";
     }
     return "'" + JSON.stringify(jsonObj) + "'";
 }
