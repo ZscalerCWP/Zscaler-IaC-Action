@@ -42,7 +42,7 @@ const configCheck = function (clientId) {
                 'auth': {
                     'host': process.env.AUTH_URL,
                     'clientId': clientId,
-                    'scope': 'offline_access openid profile',
+                    'scope': 'offline_access_profile',
                     'audience': constants.AUTH_CONSTANTS.AUDIENCE
                 }
             }
