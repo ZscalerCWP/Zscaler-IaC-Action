@@ -4,8 +4,8 @@ Zscaler Infrastructure as Code (IaC) Scan action detects security violations in 
 
 To start using the Zscaler IaC Scan action as part of your workflows, complete the following steps:
 
-1. Log into the Zscaler Workload Posture (ZWP) Admin Portal.
-2. Within the ZWP Admin Portal, start the GitHub Actions onboarding process. Make sure you create a unique identifier and note the generated client ID and client secret key.
+1. Log into the Zscaler Posture Control (ZPC) Admin Portal.
+2. Within the ZPC Portal, start the GitHub Actions onboarding process. Make sure you create a unique identifier and note the generated client ID and client secret key.
 3. Within GitHub, provide the generated Zscaler client ID and client secret key as part of GitHub secrets on the repository or at the organization level.
 4. Include a YAML file in the .github/workflows directory to start the scan. A sample YAML file is provided below. The YAML script can also be included as part of the existing workflow, if desired.
 
@@ -26,7 +26,7 @@ jobs:
       - name : Code Checkout
         uses: actions/checkout@v2
       - name : Zscaler IAC Scan
-        uses : ZscalerCWP/Zscaler-IaC-Action@v0.3.1
+        uses : ZscalerCWP/Zscaler-IaC-Action@v1.0.0
         id : zscaler-iac-scan
         with:
           client_id : ${{ secrets.ZSCANNER_CLIENT_ID }}
@@ -50,8 +50,8 @@ Setup Guidelines:
 
 Configuration Parameters:
 
-1. client_id and client_secret: Generated from the ZWP Admin Portal as mentioned in step 2 above.
-2. region: The region (e.g., US) you use for ZWP.
+1. client_id and client_secret: Generated from the ZPC Portal as mentioned in step 2 above.
+2. region: The region (e.g., US) you use for ZPC.
 3. iac_dir: Directory path from root on which you want to trigger the IaC scan.
 4. iac_file: File path from root where you want to trigger the IaC scan. This path is not required when iac_dir is present.
 5. output_format: The Zscaler IaC Scan results/output is written to the desired file formats as specified in the YAML script and placed in the workspace where the code is checked out during a job trigger.
