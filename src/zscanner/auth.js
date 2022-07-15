@@ -25,7 +25,18 @@ function getAccessToken(clientId,clientSecretKey){
               axios(options).then((response) => {
                   resolve(response.data);
               }).catch((error) => {
-                  console.log('Error in authentication' , error.message);
+                  if(error.response && error.response.status){
+                    if(error.response.status === 401) {
+                        console.log('Your tenant no longer has an entitlement to Infrastructure as Code Scanning, please contact your account team to acquire a license');
+                    } else if(error.response.status === 403){
+                        console.log('Your tenant entitlement to Infrastructure as Code Scanning has expired, please contact your account team to renew your license');
+                    } else {
+                        console.log('Error in authentication');
+                    }
+                  } else {
+                      console.log('Error in authentication' , error.message);
+                      reject(error);
+                  }
                   reject(error);
               })
           } catch(err){
