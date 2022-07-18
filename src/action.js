@@ -25,7 +25,7 @@ auth.getAccessToken(clientId, clientSecret).then((response) => {
         failBuild('Authorization failed');
     }
 }).catch((err) => {
-    failBuild('Error in generating token');
+    failBuild('Error in generating access token');
 })
 
 function orchestrateScan(accessToken) {
