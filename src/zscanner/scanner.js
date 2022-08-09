@@ -4,6 +4,7 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 const util = require("util");
 const exec = require('child_process').exec;
+const fs = require('fs');
 
 const login = function (clientId, clientSecretKey) {
     return new Promise((resolve, reject) => {
@@ -136,15 +137,11 @@ const executeScan = function () {
                 } else {
                     scan_status = 'passed';
                 }
-                if (outputFormat.startsWith("sarif") || outputFormat.endsWith("sarif") ||
-                    outputFormat.startsWith("github_sarif") || outputFormat.endsWith("github_sarif")) {
-                    core.setOutput('sarif_file_path', process.cwd() + '/result.sarif')
+                sarifPath = process.cwd() + '/result.sarif';
+                if(fs.existsSync(sarifPath)) {
+                    core.setOutput('sarif_file_path', sarifPath)
                 }
-                core.setOutput('scan_status',scan_status);
-                if (outputFormat.startsWith("json")) {
-                    const output = JSON.parse(stdout);
-                    resolve(output);
-                }
+                core.setOutput('scan_status', scan_status);
                 resolve(stdout);
             } catch (error) {
                 console.log('Scan command execution failed');
