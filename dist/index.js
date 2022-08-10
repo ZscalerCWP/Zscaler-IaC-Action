@@ -19713,9 +19713,7 @@ const executeScan = function () {
                 const fail_build = core.getInput('fail_build') == 'true';
                 var scan_status = 'passed';
                 if (stderr) {
-                    console.log(stderr);
-                    scan_status = 'failed';
-                    core.setFailed("Issue in running IaC scan");
+                    console.log("stderr: " + stderr);
                 }
                 if(error && error.code === 0){
                     scan_status = 'failed';
