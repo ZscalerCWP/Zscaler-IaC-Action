@@ -38,7 +38,7 @@ jobs:
           fail_build : 'false'
       - name: Upload SARIF file
         if: ${{ steps.zscaler-iac-scan.outputs.sarif_file_path != '' }}
-        uses: github/codeql-action/upload-sarif@v1
+        uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: ${{ steps.zscaler-iac-scan.outputs.sarif_file_path }}
 ```
