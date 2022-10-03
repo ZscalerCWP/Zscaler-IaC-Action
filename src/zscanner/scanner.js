@@ -100,8 +100,8 @@ const executeScan = function () {
             eventDetails.diff_url = context.payload.pull_request.diff_url;
             eventDetails.head_url = context.payload.pull_request.head.repo.html_url;
             eventDetails.base_url = context.payload.pull_request.base.repo.html_url;
-            eventDetails.created_at = context.payload.pull_request.created_at;
-            eventDetails.updated_at = context.payload.pull_request.updated_at;
+            eventDetails.created_at = new Date(context.payload.pull_request.created_at).getTime()/1000.0;
+            eventDetails.updated_at = new Date(context.payload.pull_request.updated_at).getTime()/1000.0;
             branchName = context.payload.pull_request.head.ref;
         }
 
