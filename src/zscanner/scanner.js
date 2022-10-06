@@ -105,7 +105,7 @@ const executeScan = function () {
             branchName = context.payload.pull_request.head.ref;
         }
 
-        var scanCommand = getBinaryPath() + util.format(constants.COMMANDS.SCAN, outputFormat, context.actor, context.runNumber, context.payload.repository.html_url, "BUILD", branchName, context.sha);
+        var scanCommand = getBinaryPath() + util.format(constants.COMMANDS.SCAN, outputFormat, context.actor, context.runNumber, context.payload.repository.html_url, "Build", branchName, context.sha);
         if (iacdir) {
             scanCommand = scanCommand + " -d " + process.cwd() + '/' + iacdir;
         } else if (iacfile) {
