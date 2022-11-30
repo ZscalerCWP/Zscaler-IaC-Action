@@ -56,7 +56,7 @@ const configCheck = function (clientId) {
                 console.log('Error in storing custom_region in context', error);
                 reject(error);
             })
-        } else{
+        } else {
             resolve('');
         }
 
@@ -74,28 +74,28 @@ const executeScan = function () {
         const repo = context.payload.repository
         var branchName = process.env.GITHUB_REF_NAME;
         const repoDetails = {
-            'default_branch' : repo.default_branch,
-            'full_name' : repo.full_name,
-            'id' : repo.id,
-            'name' : repo.name,
-            'owner' : repo.owner.name,
-            'updated_time' : repo.updated_at,
-            'url' : repo.html_url,
-            'visibility' : repo.visibility
+            'default_branch': repo.default_branch,
+            'full_name': repo.full_name,
+            'id': repo.id,
+            'name': repo.name,
+            'owner': repo.owner.name,
+            'updated_time': repo.updated_at,
+            'url': repo.html_url,
+            'visibility': repo.visibility
         }
         var eventDetails = {
-            'workflow' : context.workflow,
-            'action' : context.action,
-            'externalId' : context.runId,
-            'trigger_type' : context.eventName,
-            'user_url' : context.payload.sender.html_url,
-            'user_avatar' : context.payload.sender.avatar_url,
+            'workflow': context.workflow,
+            'action': context.action,
+            'externalId': context.runId,
+            'trigger_type': context.eventName,
+            'user_url': context.payload.sender.html_url,
+            'user_avatar': context.payload.sender.avatar_url,
         }
 
         if (context.eventName === "push") {
             eventDetails.compare_url = context.payload.compare;
             eventDetails.commit_url = context.payload.head_commit.url;
-        } else if (context.eventName === "pull_request"){
+        } else if (context.eventName === "pull_request") {
             eventDetails.pr_url = context.payload.pull_request.html_url;
             eventDetails.diff_url = context.payload.pull_request.diff_url;
             eventDetails.head_url = context.payload.pull_request.head.repo.html_url;
@@ -114,8 +114,8 @@ const executeScan = function () {
             scanCommand = scanCommand + " -d " + process.cwd();
         }
         scanCommand = scanCommand + " --repo-details " + getJsonString(repoDetails)
-                                  + " --event-details " + getJsonString(eventDetails);
-        if(logLevel){
+            + " --event-details " + getJsonString(eventDetails);
+        if (logLevel) {
             scanCommand = scanCommand + " -l " + logLevel;
         }
         console.log(scanCommand);
@@ -125,18 +125,34 @@ const executeScan = function () {
                 var scan_status = 'passed';
                 if (stderr) {
                     console.log("stderr: " + stderr);
+                    // const logs = stderr.split('\n');
+                    // Array.from(logs).forEach(logString => {
+                    //     try {
+                    //         let log = JSON.parse(logString);
+                    //         if ("error" === log['level']) {
+                    //             console.log("error log " + log);
+                    //             scan_status = 'failed';
+                    //             core.setFailed("Issue in running IaC scan");
+                    //             resolve('')
+                    //             return;
+                    //         }
+                    //     } catch {
+                    //         console.log('unable to parse json string' + logString);
+                    //     }
+                    // })
                 }
-                if(error && error.code === 0){
+                if (error && error.code === 0) {
                     scan_status = 'failed';
                     core.setFailed("Errors Observed within IaC files from repository");
-                } else if(error && error.code === 2 && fail_build){
+                } else if (error && error.code === 2 && fail_build) {
                     scan_status = 'failed';
                     core.setFailed("Violations Observed within IaC files from repository");
                 } else {
                     scan_status = 'passed';
                 }
                 sarifPath = process.cwd() + '/result.sarif';
-                if(fs.existsSync(sarifPath)) {
+                console.log('ouput'+process.env[`GITHUB_OUTPUT`])
+                if (fs.existsSync(sarifPath)) {
                     core.setOutput('sarif_file_path', sarifPath)
                 }
                 core.setOutput('scan_status', scan_status);
@@ -149,15 +165,15 @@ const executeScan = function () {
     })
 }
 
-const getBinaryPath = function(){
-    if (process.platform === "win32"){
+const getBinaryPath = function () {
+    if (process.platform === "win32") {
         return "zscanner ";
     }
     return "./zscanner ";
 }
 
-const getJsonString = function(jsonObj){
-    if (process.platform === "win32"){
+const getJsonString = function (jsonObj) {
+    if (process.platform === "win32") {
         var myJSONString = JSON.stringify(jsonObj);
         var myEscapedJSONString = myJSONString.replace(/[\\]/g, '\\\\')
             .replace(/[\"]/g, '\\\"')
