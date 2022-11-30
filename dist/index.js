@@ -21436,8 +21436,8 @@ const executeScan = function () {
             eventDetails.diff_url = context.payload.pull_request.diff_url;
             eventDetails.head_url = context.payload.pull_request.head.repo.html_url;
             eventDetails.base_url = context.payload.pull_request.base.repo.html_url;
-            eventDetails.created_at = new Date(context.payload.pull_request.created_at).getTime()/1000.0;
-            eventDetails.updated_at = new Date(context.payload.pull_request.updated_at).getTime()/1000.0;
+            eventDetails.created_at = new Date(context.payload.pull_request.created_at).getTime() / 1000.0;
+            eventDetails.updated_at = new Date(context.payload.pull_request.updated_at).getTime() / 1000.0;
             branchName = context.payload.pull_request.head.ref;
         }
 
@@ -21487,11 +21487,17 @@ const executeScan = function () {
                     scan_status = 'passed';
                 }
                 sarifPath = process.cwd() + '/result.sarif';
-                console.log('ouput'+process.env[`GITHUB_OUTPUT`])
+                console.log('ouput ' + process.env[`GITHUB_OUTPUT`])
                 if (fs.existsSync(sarifPath)) {
                     core.setOutput('sarif_file_path', sarifPath)
                 }
                 core.setOutput('scan_status', scan_status);
+                try {
+                    const data = fs.readFileSync(process.env[`GITHUB_OUTPUT`], 'utf8');
+                    console.log(data);
+                } catch (err) {
+                    console.error(err);
+                }
                 resolve(stdout);
             } catch (error) {
                 console.log('Scan command execution failed');
