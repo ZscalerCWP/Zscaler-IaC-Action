@@ -45,7 +45,7 @@ function orchestrateScan(accessToken) {
                         failBuild('Issue in running scan' + err.message);
                     })
                 }).catch((err) => {
-                    failBuild('Issue in zscanner login' + err.message);
+                    failBuild('Issue in zscanner login');
                 });
             }).catch(err => {
                 failBuild('Issue in checking for custom configs' + err.message);
