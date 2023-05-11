@@ -11,12 +11,11 @@ const login = function (clientId, clientSecretKey) {
         console.log('Running zscaler scan');
         const region = core.getInput('region');
         const initCommand = getBinaryPath() + util.format(constants.COMMANDS.LOGIN, clientId, clientSecretKey, region);
-        console.log("Zscanner Login command" + initCommand);
         cmd.asyncExec(initCommand, null).then((response) => {
             console.log("Zscanner login is successful");
             resolve(response);
         }).catch((error) => {
-            console.log('Error in storing access_token in context', error);
+            console.log('Error in storing access_token in context');
             reject(error);
         })
 
@@ -104,11 +103,18 @@ const executeScan = function () {
             eventDetails.updated_at = new Date(context.payload.pull_request.updated_at).getTime()/1000.0;
             branchName = context.payload.pull_request.head.ref;
         }
+        const regExp = /[&|;$><`!]/g;
+        branchName = branchName.replace(regExp, '')
+        let actor = context.actor.replace(regExp, '')
+        let runNumber = context.runNumber.replace(regExp, '')
+        let sha = context.sha.replace(regExp, '')
 
-        var scanCommand = getBinaryPath() + util.format(constants.COMMANDS.SCAN, outputFormat, context.actor, context.runNumber, context.payload.repository.html_url, "Build", branchName, context.sha);
+        var scanCommand = getBinaryPath() + util.format(constants.COMMANDS.SCAN, outputFormat, actor, runNumber, context.payload.repository.html_url, "Build", branchName, sha);
         if (iacdir) {
+            iacdir = iacdir.replace(regExp, '')
             scanCommand = scanCommand + " -d " + process.cwd() + '/' + iacdir;
         } else if (iacfile) {
+            iacfile = iacfile.replace(regExp, '')
             scanCommand = scanCommand + " -f " + process.cwd() + '/' + iacfile;
         } else {
             scanCommand = scanCommand + " -d " + process.cwd();
