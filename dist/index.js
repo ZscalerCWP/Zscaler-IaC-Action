@@ -21401,8 +21401,8 @@ const configCheck = function (clientId) {
 const executeScan = function () {
     return new Promise((resolve, reject) => {
 
-        const iacdir = core.getInput('iac_dir');
-        const iacfile = core.getInput('iac_file');
+        let iacdir = core.getInput('iac_dir');
+        let iacfile = core.getInput('iac_file');
         const outputFormat = core.getInput('output_format');
         const logLevel = core.getInput('log_level');
         const context = github.context;
