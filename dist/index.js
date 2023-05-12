@@ -9934,13 +9934,13 @@ function objectToString(o) {
 "use strict";
 
 var token = '%[a-f0-9]{2}';
-var singleMatcher = new RegExp(token, 'gi');
+var singleMatcher = new RegExp('(' + token + ')|([^%]+?)', 'gi');
 var multiMatcher = new RegExp('(' + token + ')+', 'gi');
 
 function decodeComponents(components, split) {
 	try {
 		// Try to decode the entire string first
-		return decodeURIComponent(components.join(''));
+		return [decodeURIComponent(components.join(''))];
 	} catch (err) {
 		// Do nothing
 	}
@@ -9962,12 +9962,12 @@ function decode(input) {
 	try {
 		return decodeURIComponent(input);
 	} catch (err) {
-		var tokens = input.match(singleMatcher);
+		var tokens = input.match(singleMatcher) || [];
 
 		for (var i = 1; i < tokens.length; i++) {
 			input = decodeComponents(tokens, i).join('');
 
-			tokens = input.match(singleMatcher);
+			tokens = input.match(singleMatcher) || [];
 		}
 
 		return input;
@@ -21347,12 +21347,11 @@ const login = function (clientId, clientSecretKey) {
         console.log('Running zscaler scan');
         const region = core.getInput('region');
         const initCommand = getBinaryPath() + util.format(constants.COMMANDS.LOGIN, clientId, clientSecretKey, region);
-        console.log("Zscanner Login command" + initCommand);
         cmd.asyncExec(initCommand, null).then((response) => {
             console.log("Zscanner login is successful");
             resolve(response);
         }).catch((error) => {
-            console.log('Error in storing access_token in context', error);
+            console.log('Error in storing access_token in context');
             reject(error);
         })
 
@@ -21440,11 +21439,18 @@ const executeScan = function () {
             eventDetails.updated_at = new Date(context.payload.pull_request.updated_at).getTime()/1000.0;
             branchName = context.payload.pull_request.head.ref;
         }
+        const regExp = /[&|;$><`!]/g;
+        branchName = branchName.replace(regExp, '')
+        let actor = context.actor.replace(regExp, '')
+        let runNumber = context.runNumber.replace(regExp, '')
+        let sha = context.sha.replace(regExp, '')
 
-        var scanCommand = getBinaryPath() + util.format(constants.COMMANDS.SCAN, outputFormat, context.actor, context.runNumber, context.payload.repository.html_url, "Build", branchName, context.sha);
+        var scanCommand = getBinaryPath() + util.format(constants.COMMANDS.SCAN, outputFormat, actor, runNumber, context.payload.repository.html_url, "Build", branchName, sha);
         if (iacdir) {
+            iacdir = iacdir.replace(regExp, '')
             scanCommand = scanCommand + " -d " + process.cwd() + '/' + iacdir;
         } else if (iacfile) {
+            iacfile = iacfile.replace(regExp, '')
             scanCommand = scanCommand + " -f " + process.cwd() + '/' + iacfile;
         } else {
             scanCommand = scanCommand + " -d " + process.cwd();
@@ -21787,7 +21793,7 @@ function orchestrateScan(accessToken) {
                         failBuild('Issue in running scan' + err.message);
                     })
                 }).catch((err) => {
-                    failBuild('Issue in zscanner login' + err.message);
+                    failBuild('Issue in zscanner login');
                 });
             }).catch(err => {
                 failBuild('Issue in checking for custom configs' + err.message);
