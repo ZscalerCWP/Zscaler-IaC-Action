@@ -30,11 +30,11 @@
     "axios": "^0.27.2",
     "child_process": "^1.0.2",
     "fs": "^0.0.2",
-    "markdown-table": "^3.0.2",
-    "query-string": "^7.1.1",
+    "markdown-table": "^3.0.3",
+    "query-string": "^7.1.2",
     "stream": "^0.0.2",
     "targz": "^1.0.1",
-    "util": "^0.12.4",
+    "util": "^0.12.5",
     "uuid": "^9.0.0"
   }
 }
