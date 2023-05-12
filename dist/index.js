@@ -21442,7 +21442,7 @@ const executeScan = function () {
         const regExp = /[&|;$><`!]/g;
         branchName = branchName.replace(regExp, '')
         let actor = context.actor.replace(regExp, '')
-        let runNumber = context.runNumber.replace(regExp, '')
+        let runNumber = context.runNumber
         let sha = context.sha.replace(regExp, '')
 
         var scanCommand = getBinaryPath() + util.format(constants.COMMANDS.SCAN, outputFormat, actor, runNumber, context.payload.repository.html_url, "Build", branchName, sha);
