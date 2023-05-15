@@ -21401,8 +21401,8 @@ const configCheck = function (clientId) {
 const executeScan = function () {
     return new Promise((resolve, reject) => {
 
-        const iacdir = core.getInput('iac_dir');
-        const iacfile = core.getInput('iac_file');
+        let iacdir = core.getInput('iac_dir');
+        let iacfile = core.getInput('iac_file');
         const outputFormat = core.getInput('output_format');
         const logLevel = core.getInput('log_level');
         const context = github.context;
@@ -21442,7 +21442,7 @@ const executeScan = function () {
         const regExp = /[&|;$><`!]/g;
         branchName = branchName.replace(regExp, '')
         let actor = context.actor.replace(regExp, '')
-        let runNumber = context.runNumber.replace(regExp, '')
+        let runNumber = context.runNumber
         let sha = context.sha.replace(regExp, '')
 
         var scanCommand = getBinaryPath() + util.format(constants.COMMANDS.SCAN, outputFormat, actor, runNumber, context.payload.repository.html_url, "Build", branchName, sha);
