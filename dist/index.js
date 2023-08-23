@@ -21409,11 +21409,11 @@ const executeScan = function () {
         const repo = context.payload.repository
         var branchName = process.env.GITHUB_REF_NAME;
         const repoDetails = {
-            'default_branch' : repo.default_branch,
+            'default_branch' : "test-'-ee",
             'full_name' : repo.full_name,
             'id' : repo.id,
             'name' : repo.name,
-            'owner' : repo.owner.name,
+            'owner' : "tarun ' alug",
             'updated_time' : repo.updated_at,
             'url' : repo.html_url,
             'visibility' : repo.visibility
