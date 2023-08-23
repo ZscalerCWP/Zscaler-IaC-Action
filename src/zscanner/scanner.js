@@ -164,19 +164,16 @@ const getBinaryPath = function(){
 }
 
 const getJsonString = function(jsonObj){
-    if (process.platform === "win32"){
-        var myJSONString = JSON.stringify(jsonObj);
-        var myEscapedJSONString = myJSONString.replace(/[\\]/g, '\\\\')
-            .replace(/[\"]/g, '\\\"')
-            .replace(/[\/]/g, '\\/')
-            .replace(/[\b]/g, '\\b')
-            .replace(/[\f]/g, '\\f')
-            .replace(/[\n]/g, '\\n')
-            .replace(/[\r]/g, '\\r')
-            .replace(/[\t]/g, '\\t');;
-        return "\"" + myEscapedJSONString + "\"";
-    }
-    return "'" + JSON.stringify(jsonObj) + "'";
+    var myJSONString = JSON.stringify(jsonObj);
+    var myEscapedJSONString = myJSONString.replace(/[\\]/g, '\\\\')
+        .replace(/[\"]/g, '\\\"')
+        .replace(/[\/]/g, '\\/')
+        .replace(/[\b]/g, '\\b')
+        .replace(/[\f]/g, '\\f')
+        .replace(/[\n]/g, '\\n')
+        .replace(/[\r]/g, '\\r')
+        .replace(/[\t]/g, '\\t');;
+    return "\"" + myEscapedJSONString + "\"";
 }
 
 module.exports = {
