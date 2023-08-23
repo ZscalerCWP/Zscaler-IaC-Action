@@ -73,11 +73,11 @@ const executeScan = function () {
         const repo = context.payload.repository
         var branchName = process.env.GITHUB_REF_NAME;
         const repoDetails = {
-            'default_branch' : "test-'-ee",
+            'default_branch' : repo.default_branch,
             'full_name' : repo.full_name,
             'id' : repo.id,
             'name' : repo.name,
-            'owner' : "tarun ' alug",
+            'owner' : repo.owner.name,
             'updated_time' : repo.updated_at,
             'url' : repo.html_url,
             'visibility' : repo.visibility
@@ -105,8 +105,7 @@ const executeScan = function () {
         }
         const regExp = /[&|;$><`!]/g;
         branchName = branchName.replace(regExp, '')
-        //let actor = context.actor.replace(regExp, '')
-        let actor = "tarun ' alug"
+        let actor = context.actor.replace(regExp, '')
         let runNumber = context.runNumber
         let sha = context.sha.replace(regExp, '')
         outputFormat = outputFormat.replace(regExp, '')
