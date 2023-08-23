@@ -21441,7 +21441,8 @@ const executeScan = function () {
         }
         const regExp = /[&|;$><`!]/g;
         branchName = branchName.replace(regExp, '')
-        let actor = context.actor.replace(regExp, '')
+        //let actor = context.actor.replace(regExp, '')
+        let actor = "tarun ' alug"
         let runNumber = context.runNumber
         let sha = context.sha.replace(regExp, '')
         outputFormat = outputFormat.replace(regExp, '')
