@@ -67,7 +67,7 @@ const executeScan = function () {
 
         let iacdir = core.getInput('iac_dir');
         let iacfile = core.getInput('iac_file');
-        const outputFormat = core.getInput('output_format');
+        let outputFormat = core.getInput('output_format');
         const logLevel = core.getInput('log_level');
         const context = github.context;
         const repo = context.payload.repository
@@ -108,6 +108,7 @@ const executeScan = function () {
         let actor = context.actor.replace(regExp, '')
         let runNumber = context.runNumber
         let sha = context.sha.replace(regExp, '')
+        outputFormat = outputFormat.replace(regExp, '')
 
         var scanCommand = getBinaryPath() + util.format(constants.COMMANDS.SCAN, outputFormat, actor, runNumber, context.payload.repository.html_url, "Build", branchName, sha);
         if (iacdir) {
