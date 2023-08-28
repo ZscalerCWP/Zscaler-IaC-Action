@@ -26,7 +26,7 @@ jobs:
       - name : Code Checkout
         uses: actions/checkout@v2
       - name : Zscaler IAC Scan
-        uses : ZscalerCWP/Zscaler-IaC-Action@v1.5.0
+        uses : ZscalerCWP/Zscaler-IaC-Action@v1.5.1
         id : zscaler-iac-scan
         with:
           client_id : ${{ secrets.ZSCANNER_CLIENT_ID }}
@@ -34,7 +34,7 @@ jobs:
           region : 'US'
           iac_dir : 'IAC directory path from root'
           iac_file : 'IAC file path from root'
-          output_format : 'json/yaml/sarif/human/json+github-sarif/human+github-sarif'
+          output_format : 'human+github-sarif'
           fail_build : 'false'
       - name: Upload SARIF file
         if: ${{ steps.zscaler-iac-scan.outputs.sarif_file_path != '' }}
@@ -54,7 +54,7 @@ Configuration Parameters:
 2. region: The region (e.g., US) you use for ZPC.
 3. iac_dir: Directory path from root on which you want to trigger the IaC scan.
 4. iac_file: File path from root where you want to trigger the IaC scan. This path is not required when iac_dir is present.
-5. output_format: The Zscaler IaC Scan results/output is written to the desired file formats as specified in the YAML script and placed in the workspace where the code is checked out during a job trigger.
+5. output_format: The Zscaler IaC Scan results/output is written to the desired file formats as specified in the YAML script and placed in the workspace where the code is checked out during a job trigger. The supported formats are json/yaml/sarif/human/json+github-sarif/human+github-sarif
 6. fail_build: Set this value to true or false. If you don't want the Zscaler IaC Scan app to fail the workflow build when severe violations are found post the scan process, set the value to false.
 
 Action Outputs : 
