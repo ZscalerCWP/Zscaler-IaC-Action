@@ -21447,10 +21447,7 @@ const executeScan = function () {
         outputFormat = outputFormat.replace(regExp, '')
         logLevel = logLevel.replace(regExp, '')
         let outformatValid = validateOutputFormat(outputFormat)
-        console.log("valid format:" + outformatValid);
         if (!outformatValid) {
-            console.log("Invalid output format");
-            core.setFailed("Invalid output format");
             reject("Invalid output format");
             return;
         }
@@ -21523,6 +21520,7 @@ const getJsonString = function(jsonObj){
 const validateOutputFormat = function(outputFormat) {
     console.log("outputforma: " + outputFormat);
     if (outputFormat.length <= 0) {
+        core.setFailed("output format is not supplied");
         return false
     }
     const formats = outputFormat.split("+")
@@ -21532,6 +21530,7 @@ const validateOutputFormat = function(outputFormat) {
     }
     for (let i = 0; i < formats.length; i++) {
         if (!validFormats.includes(formats[i])) {
+            core.setFailed("Invalid output format");
             return false
         }
     }
