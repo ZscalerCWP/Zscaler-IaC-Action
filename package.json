@@ -1,6 +1,6 @@
 {
   "name": "zscaler-iac-action",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Zscaler IAC Scan",
   "main": "src/action.js",
   "scripts": {
