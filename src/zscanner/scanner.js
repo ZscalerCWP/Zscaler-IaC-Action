@@ -104,7 +104,7 @@ const executeScan = function () {
             branchName = context.payload.pull_request.head.ref;
         }
         const regExp = /[&|;$><`!]/g;
-        branchName = branchName.replace(/"/g, '\\"').replace(/'/g, "\\'").replace(regExp, '')
+        branchName = branchName.replace(regExp, '')
         let actor = context.actor.replace(regExp, '')
         let runNumber = context.runNumber
         let sha = context.sha.replace(regExp, '')
@@ -182,7 +182,6 @@ const getJsonString = function(jsonObj){
 }
 
 const validateOutputFormat = function(outputFormat) {
-    console.log("outputforma: " + outputFormat);
     if (outputFormat.length <= 0) {
         core.setFailed("output format is not supplied");
         return false
