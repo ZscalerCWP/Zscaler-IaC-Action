@@ -184,12 +184,20 @@ const getJsonString = function(jsonObj){
 }
 
 const validateOutputFormat = function(outputFormat) {
+    if (outputFormat.length <= 0) {
+        return false
+    }
     const formats = outputFormat.split("+")
     const validFormats = ["json", "yaml", "sarif", "human", "github-sarif"]
     if (validFormats.includes(formats)) {
         return true
     }
-    return false
+    for (let i = 0; i < formats.length; i++) {
+        if (!validFormats.includes(formats[i])) {
+            return false
+        }
+    }
+    return true
 }
 
 module.exports = {
