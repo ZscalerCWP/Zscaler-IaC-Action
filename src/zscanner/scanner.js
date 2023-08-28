@@ -108,7 +108,6 @@ const executeScan = function () {
         let actor = context.actor.replace(regExp, '')
         let runNumber = context.runNumber
         let sha = context.sha.replace(regExp, '')
-        outputFormat = outputFormat.replace(regExp, '')
         logLevel = logLevel.replace(regExp, '')
         if (outputFormat.length > 0) {
             let outformatValid = validateOutputFormat(outputFormat)
