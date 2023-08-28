@@ -184,6 +184,7 @@ const getJsonString = function(jsonObj){
 }
 
 const validateOutputFormat = function(outputFormat) {
+    console.log("outputforma: " + outputFormat);
     if (outputFormat.length <= 0) {
         return false
     }
