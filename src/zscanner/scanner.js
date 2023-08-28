@@ -67,8 +67,8 @@ const executeScan = function () {
 
         let iacdir = core.getInput('iac_dir');
         let iacfile = core.getInput('iac_file');
-        const outputFormat = core.getInput('output_format');
-        const logLevel = core.getInput('log_level');
+        let outputFormat = core.getInput('output_format');
+        let logLevel = core.getInput('log_level');
         const context = github.context;
         const repo = context.payload.repository
         var branchName = process.env.GITHUB_REF_NAME;
@@ -108,6 +108,8 @@ const executeScan = function () {
         let actor = context.actor.replace(regExp, '')
         let runNumber = context.runNumber
         let sha = context.sha.replace(regExp, '')
+        outputFormat = outputFormat.replace(regExp, '')
+        logLevel = logLevel.replace(regExp, '')
 
         var scanCommand = getBinaryPath() + util.format(constants.COMMANDS.SCAN, outputFormat, actor, runNumber, context.payload.repository.html_url, "Build", branchName, sha);
         if (iacdir) {
@@ -163,19 +165,16 @@ const getBinaryPath = function(){
 }
 
 const getJsonString = function(jsonObj){
-    if (process.platform === "win32"){
-        var myJSONString = JSON.stringify(jsonObj);
-        var myEscapedJSONString = myJSONString.replace(/[\\]/g, '\\\\')
-            .replace(/[\"]/g, '\\\"')
-            .replace(/[\/]/g, '\\/')
-            .replace(/[\b]/g, '\\b')
-            .replace(/[\f]/g, '\\f')
-            .replace(/[\n]/g, '\\n')
-            .replace(/[\r]/g, '\\r')
-            .replace(/[\t]/g, '\\t');;
-        return "\"" + myEscapedJSONString + "\"";
-    }
-    return "'" + JSON.stringify(jsonObj) + "'";
+    var myJSONString = JSON.stringify(jsonObj);
+    var myEscapedJSONString = myJSONString.replace(/[\\]/g, '\\\\')
+        .replace(/[\"]/g, '\\\"')
+        .replace(/[\/]/g, '\\/')
+        .replace(/[\b]/g, '\\b')
+        .replace(/[\f]/g, '\\f')
+        .replace(/[\n]/g, '\\n')
+        .replace(/[\r]/g, '\\r')
+        .replace(/[\t]/g, '\\t');;
+    return "\"" + myEscapedJSONString + "\"";
 }
 
 module.exports = {
