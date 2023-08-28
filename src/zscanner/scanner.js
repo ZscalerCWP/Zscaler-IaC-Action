@@ -110,10 +110,14 @@ const executeScan = function () {
         let sha = context.sha.replace(regExp, '')
         outputFormat = outputFormat.replace(regExp, '')
         logLevel = logLevel.replace(regExp, '')
-        let outformatValid = validateOutputFormat(outputFormat)
-        if (!outformatValid) {
-            reject("Invalid output format");
-            return;
+        if (outputFormat.length > 0) {
+            let outformatValid = validateOutputFormat(outputFormat)
+            if (!outformatValid) {
+                reject("Invalid output format");
+                return;
+            }
+        } else {
+            outputFormat = "human+github-sarif"
         }
         var scanCommand = getBinaryPath() + util.format(constants.COMMANDS.SCAN, outputFormat, actor, runNumber, context.payload.repository.html_url, "Build", branchName, sha);
         if (iacdir) {
@@ -182,10 +186,6 @@ const getJsonString = function(jsonObj){
 }
 
 const validateOutputFormat = function(outputFormat) {
-    if (outputFormat.length <= 0) {
-        core.setFailed("output format is not supplied");
-        return false
-    }
     const formats = outputFormat.split("+")
     const validFormats = ["json", "yaml", "sarif", "human", "github-sarif"]
     if (validFormats.includes(formats)) {
