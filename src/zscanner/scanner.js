@@ -111,8 +111,9 @@ const executeScan = function () {
         outputFormat = outputFormat.replace(regExp, '')
         logLevel = logLevel.replace(regExp, '')
         let outformatValid = validateOutputFormat(outputFormat)
-
+        console.log("valid format:" + outformatValid);
         if (!outformatValid) {
+            console.log("Invalid output format");
             core.setFailed("Invalid output format");
             reject("Invalid output format");
             return;

@@ -21440,13 +21440,20 @@ const executeScan = function () {
             branchName = context.payload.pull_request.head.ref;
         }
         const regExp = /[&|;$><`!]/g;
-        branchName = branchName.replace(regExp, '')
+        branchName = branchName.replace(/"/g, '\\"').replace(/'/g, "\\'").replace(regExp, '')
         let actor = context.actor.replace(regExp, '')
         let runNumber = context.runNumber
         let sha = context.sha.replace(regExp, '')
         outputFormat = outputFormat.replace(regExp, '')
         logLevel = logLevel.replace(regExp, '')
-
+        let outformatValid = validateOutputFormat(outputFormat)
+        console.log("valid format:" + outformatValid);
+        if (!outformatValid) {
+            console.log("Invalid output format");
+            core.setFailed("Invalid output format");
+            reject("Invalid output format");
+            return;
+        }
         var scanCommand = getBinaryPath() + util.format(constants.COMMANDS.SCAN, outputFormat, actor, runNumber, context.payload.repository.html_url, "Build", branchName, sha);
         if (iacdir) {
             iacdir = iacdir.replace(regExp, '')
@@ -21511,6 +21518,24 @@ const getJsonString = function(jsonObj){
         .replace(/[\r]/g, '\\r')
         .replace(/[\t]/g, '\\t');;
     return "\"" + myEscapedJSONString + "\"";
+}
+
+const validateOutputFormat = function(outputFormat) {
+    console.log("outputforma: " + outputFormat);
+    if (outputFormat.length <= 0) {
+        return false
+    }
+    const formats = outputFormat.split("+")
+    const validFormats = ["json", "yaml", "sarif", "human", "github-sarif"]
+    if (validFormats.includes(formats)) {
+        return true
+    }
+    for (let i = 0; i < formats.length; i++) {
+        if (!validFormats.includes(formats[i])) {
+            return false
+        }
+    }
+    return true
 }
 
 module.exports = {
