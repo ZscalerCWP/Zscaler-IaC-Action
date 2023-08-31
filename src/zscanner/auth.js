@@ -27,9 +27,9 @@ function getAccessToken(clientId,clientSecretKey){
               }).catch((error) => {
                   if(error.response && error.response.status){
                     if(error.response.status === 401) {
-                        console.log('Your tenant no longer has an entitlement to Infrastructure as Code Scanning, please contact your account team to acquire a license');
+                        console.log('Your client credentials are invalid');
                     } else if(error.response.status === 403){
-                        console.log('Your tenant entitlement to Infrastructure as Code Scanning has expired, please contact your account team to renew your license');
+                        console.log('Your client credentials are invalid');                        
                     } else {
                         console.log('Error in authentication');
                     }
