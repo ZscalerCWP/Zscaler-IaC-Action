@@ -21407,7 +21407,8 @@ const executeScan = function () {
         let logLevel = core.getInput('log_level');
         const context = github.context;
         const repo = context.payload.repository
-        var branchName = process.env.GITHUB_REF_NAME;
+        let branchName = process.env.GITHUB_REF_NAME;
+        branchName = branchName.replace(/[\"]/g, '\\\"')
         const repoDetails = {
             'default_branch' : repo.default_branch,
             'full_name' : repo.full_name,
